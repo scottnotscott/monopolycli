@@ -10,6 +10,10 @@ class Game {
         this.players = players;
         //player 2 = uneven
         this.running = false;
+        const playerId = [
+            '0',
+            '1',
+        ]
         this.ownedTiles = [
 
         ]
@@ -31,10 +35,14 @@ class Game {
     }
     async start() {
         this.running = true;
+        //generate new user id's for each user from array of id's
         console.log('\n')
         console.log(chalk.green('Game started.'))
         // var playerOne = new Player('Scott', 'Cat')
         // var playerTwo = new Player('Molly', 'Boat')
+        this.players.forEach(function(idx) {
+            this.players.setId(playerId[idx])
+        })
         await this.nextTurn();
 
     }
@@ -179,9 +187,19 @@ class Game {
         console.log(chalk.red('======== ' + logUser[0] + ' ======== ' + '<-- logUser'))
         let logTile = this.players[this.currentTurn].getPosition()
         let tileName = this.tiles[player.getPosition()].getName();
+        let playerOneId = this.players[0].getId();
+        let playerTwoId = this.players[1].getId();
         console.log(chalk.red('======== ' + logTile + ' ======== ' + tileName + ' ======== ' + '<-- logTile'))
         let logOwnedBy = this.getOwnedBy();
         console.log(chalk.red('======== ' + logOwnedBy + ' ======== ' + '<-- logOwnedBy'))
+        console.log(chalk.red('======== ' + playerOneId + ' ======== ' + '<-- playerOneId'))
+        console.log(chalk.red('======== ' + playerTwoId + ' ======== ' + '<-- playerTwoId'))
+        this.getPlayerOne(player);
+    }
+    getPlayerOne(player) {
+        let thePlayerOne = this.players[0]
+        console.log(thePlayerOne)
+        return thePlayerOne;
     }
 
 }

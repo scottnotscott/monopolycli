@@ -4,6 +4,7 @@ class Player {
     constructor(budget){
         this.balance = budget;
         this.position = 0;
+        this.id = null;
 
     }
 
@@ -23,6 +24,15 @@ class Player {
         this.position = position;
     }
     purchaseTile(player) {
+    }
+    setId() {
+        this.id = id;
+    }
+    getId() {
+        if(this.id) {
+            return this.id;
+        }
+        return 'Id not assigned.'
     }
 }
 

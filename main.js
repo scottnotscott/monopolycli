@@ -19,10 +19,12 @@ const chalk = require('chalk')
  */
 
 async function main() {
-    console.log(chalk.green('------ UHI ASD ------'))
-    console.log(chalk.blue('------------------'))
-    console.log(chalk.green('------ Monopoly CLI ------'))
-    console.log(chalk.blue('------------------'))
+    console.log(chalk.blue('*#######################*'))
+    console.log(chalk.green('#--------UHI-ASD--------#'))
+    console.log(chalk.green('#-------MONOPOLY--------#'))
+    console.log(chalk.yellowBright('#----@scottnotscott-----#'))
+    console.log(chalk.yellowBright('#------^-Github-^-------#'))
+    console.log(chalk.blue('*#######################*'))
 
     let players = null;
     let budget = null;
