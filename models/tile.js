@@ -1,5 +1,9 @@
 const chalk = require('chalk')
 
+/**
+ * TODO: move getOwnedBy and setOwnedBy from here to Game class
+ *       since Game class has tile instances
+ */
 const Player = require('./player')
 class Tile {
     constructor(name, price, position, type) {
@@ -7,21 +11,7 @@ class Tile {
         this.price = price;
         this.position = position;
         this.type = type;
-        this.owned = false;
-        this.ownedBy = null;
         this.isJail = false;
-    }
-    getOwned() {
-        return this.owned;
-    }
-    setOwned() {
-        return this.owned = true;
-    }
-    getOwnedBy() {
-        return this.ownedBy;
-    }
-    setOwnedBy(player) {
-        this.ownedBy = Player.this.player.getName();
     }
     getName() {
         return this.name;

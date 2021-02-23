@@ -10,6 +10,9 @@ class Game {
         this.players = players;
         //player 2 = uneven
         this.running = false;
+        this.ownedTiles = [
+
+        ]
         this.tiles = [
             new Tile('Go', 999999999, 0, 'go'),
             new Tile('Mount Ida', 122, 1, 'utility'),
@@ -53,7 +56,6 @@ class Game {
         const choice = await readlineSync.question('Available Commands\n roll :: roll the dice\n balance :: print balance\n purchase :: purchase tile \n where :: where am I?\n> ');
         if(!answered) {
             if(choice === 'roll') {
-                answered = true;
                 console.log('\n')
                 await this.rollDice(player);
             }
@@ -66,13 +68,19 @@ class Game {
                 answered = false;
                 
             }
-            if(answered === false) {
-                const takeTwo = readlineSync.question('Available Command\n roll :: roll the dice\n');
-                await this.rollDice(player);
-                answered = true;
+            if(choice === 'debug') {
+                console.log(chalk.blue('========Entering Debug mode========'))
+                await this.debug(player)
+                answered = false;
+                console.log(chalk.blue('========Exiting Debug mode========'))
             }
+            // if(answered === false) {
+            //     const takeTwo = readlineSync.question('Available Command\n roll :: roll the dice\n');
+            //     await this.rollDice(player);
+            //     answered = true;
+            // }
         }
-        await this.setNextTurn();
+        await this.setNextTurn() 
     }
 
     async setNextTurn() {
@@ -100,7 +108,7 @@ class Game {
         let activeTileName = this.tiles[player.getPosition()].getName();
         let activeTilePrice = this.tiles[player.getPosition()].getPrice();
         let activeTileType = this.tiles[player.getPosition()].getType();
-        let activeTileOwnedBy = this.tiles[player.getPosition()].getOwnedBy();
+        let activeTileOwnedBy = this.getOwnedBy();
         console.log(chalk.green(`\n----------------\nYou landed on: ${activeTileName}\n ----------------\n`));
         console.log(chalk.green(`\n----------------\n    Priced at: ${activeTilePrice}\n----------------\n`));
         console.log(chalk.green(`\n----------------\n      Of type: ${activeTileType}\n ----------------\n`));
@@ -113,8 +121,8 @@ class Game {
                 let currentBalance = player.getBalance();
                 if(!activeTileOwnedBy) {
                     if(activeTilePrice <= currentBalance) {
-                        this.tiles[player.getPosition()].setOwnedBy();
-                        this.tiles[player.getPosition()].setOwned();
+                        this.getOwnedBy();
+                        this.setOwnedBy(player);
                         console.log(chalk.green(`\n----------------\n   Tile Purchased: ${activeTileName}\n ----------------\n`));
                         reply = true;
                     } else {
@@ -141,6 +149,39 @@ class Game {
         let _price = this.tiles[player.getPosition()].getPrice();
         console.log(chalk.red(`DEDUCTING ${_price} from your balance`))
         return player.setBalance(_price)
+    }
+    getOwnedBy(player) {
+        let _player = (this.players[this.currentTurn] + 1)
+        let _tile = this.players[this.currentTurn].getPosition();
+        let isOwned = false
+        let purchased = false
+
+        if(!isOwned) {
+            if(this.ownedTiles.includes(_player)) {
+                isOwned = true;
+                return purchased = true;
+            }
+            if(!this.ownedTiles.includes(_player)) {
+                isOwned = false;
+                return purchased = false;
+            }
+            return purchased = false;
+        }
+    } 
+    setOwnedBy(player) {
+        let activePlayer = (this.players[this.currentTurn] + 1)
+        let _tile = this.players[this.currentTurn].getPosition()
+        return this.ownedTiles.push(activePlayer, _tile)
+
+    }
+    debug(player) {
+        let logUser = this.players[this.currentTurn]
+        console.log(chalk.red('======== ' + logUser[0] + ' ======== ' + '<-- logUser'))
+        let logTile = this.players[this.currentTurn].getPosition()
+        let tileName = this.tiles[player.getPosition()].getName();
+        console.log(chalk.red('======== ' + logTile + ' ======== ' + tileName + ' ======== ' + '<-- logTile'))
+        let logOwnedBy = this.getOwnedBy();
+        console.log(chalk.red('======== ' + logOwnedBy + ' ======== ' + '<-- logOwnedBy'))
     }
 
 }

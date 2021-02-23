@@ -29,11 +29,21 @@ async function main() {
 
     while (!players) {
         const answer = await readlineSync.question("# of players?\n");
-        players = answer;
+        if(answer < 3){
+            players = answer
+        } else {
+            console.log(chalk.red('Max of two players.'))
+        }
     }
     while (!budget) {
-        const answer = await readlineSync.question("Player budget?\n");
-        budget = answer;
+        const answerBudget = await readlineSync.question("Player budget?\n");
+        let parsedBudget = parseInt(answerBudget)
+        if(parsedBudget < 5000) {
+            console.log(chalk.red('Budget must be greater than 5000.'))
+        }
+        if(parsedBudget >= 5000) {
+                budget = parsedBudget
+        }
     }
 
     const Players = [];
